@@ -1,26 +1,24 @@
 def diag_sum(mat):
     max_sum = 0
-    rows = len(mat)
-    columns = len(mat[0])
-    for i in range(columns):
+    for i in range(len(mat[0])):
         start_col = i
         start_row = 0
-        temp_sum = 0
-        while start_col < columns and start_row < rows:
-            temp_sum += mat[start_row][start_col]
-            start_col += 1
-            start_row += 1
-        if temp_sum > max_sum:
-            max_sum = temp_sum
-        temp_sum = 0
-        start_row = 0
-        start_col = i
-        while start_col > 0 and start_row < rows:
-            temp_sum += mat[start_row][start_col]
-            start_col -= 1
-            start_row += 1
-        if temp_sum > max_sum:
-            max_sum = temp_sum
+        forward_diag = [[] for _ in range((2*len(mat) + 2*len(mat[0]) -2)//2)]
+        backward_diag = [[] for _ in range((2*len(mat) + 2*len(mat[0]) -2)//2)]
+        for j in range(len(mat[0])):
+            for k in range(len(mat)):
+                forward_diag[j + k].append(mat[k][j])
+                backward_diag[j - k + len(mat)-1].append(mat[k][j])
+    for i in forward_diag:
+        summ = 0
+        for j in i:
+            summ += j
+        max_sum = max(summ, max_sum)
+    for i in backward_diag:
+        summ = 0
+        for j in i:
+            summ += j
+        max_sum = max(summ, max_sum)
 
     return max_sum
 
